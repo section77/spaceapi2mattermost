@@ -16,7 +16,7 @@ import yaml
 def main():
     print("read config")
     config = ""
-    with open("/home/tuff/Documents/section77/mattermost-spaceapi/s77-status-bot-config.yaml", "r") as stream:
+    with open("/config/config.yaml", "r") as stream:
         try:
             config = yaml.safe_load(stream)
         except yaml.YAMLError as exc:
@@ -39,7 +39,7 @@ def main():
 
 def refresh(driver, lastStatus):
     team = driver.teams.get_team_by_name('section77')
-    channel = driver.channels.get_channel_by_name(team['id'], 'test-python-api')
+    channel = driver.channels.get_channel_by_name(team['id'], 'clubstatus')
     
     #get current time
     hour = str(datetime.datetime.now().strftime("%H"))
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     #execute once
     driver = main()
 
-    lastStatus = False
+    lastStatus = True
 
     #execute every minute
     while True:
