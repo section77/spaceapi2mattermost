@@ -5,13 +5,9 @@
 
 from mattermostdriver import Driver
 import requests
-import datetime
 import time
+import os
 import yaml
-
-#async def my_event_handler(message):
-    #print(message)
-#    pass
 
 def main():
     print("read config")
@@ -27,13 +23,13 @@ def main():
         return
     
     print("start login")
-    driver = Driver({'url': config['url'], 'login_id': config['user'], 'password': config['password'], 'scheme': 'https', 'port': 443})
+    driver = Driver({'url': config['url'], 'login_id': config['user'], 'token': config['token'], 'scheme': 'https', 'port': 443})
     driver.login()
-    
-    #driver.init_websocket(my_event_handler)
-    #driver.disconnect()
 
     print("login successful")
+
+    os.environ['TZ'] = 'Europe/Berlin'
+    time.tzset()
 
     return driver
 
@@ -42,9 +38,7 @@ def refresh(driver, lastStatus):
     channel = driver.channels.get_channel_by_name(team['id'], 'clubstatus')
     
     #get current time
-    hour = str(datetime.datetime.now().strftime("%H"))
-    minute = str(datetime.datetime.now().strftime("%M"))
-    timestamp = f"{hour}:{minute}"
+    timestamp = time.strftime('%H:%M')
 
     #get spaceapi status
     response = requests.get('https://api.section77.de')
@@ -85,4 +79,3 @@ if __name__ == '__main__':
     while True:
         lastStatus = refresh(driver, lastStatus)
         time.sleep(60)
-
