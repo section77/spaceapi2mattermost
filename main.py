@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 
-#pip install httpx
-#pip install git+https://github.com/Vaelor/python-mattermost-driver.git
-
 from mattermostdriver import Driver
 import requests
 import time
@@ -27,7 +24,8 @@ def main():
     driver.login()
 
     print("login successful")
-
+    
+    #hardcode timezone because docker container may not know the correct timezone
     os.environ['TZ'] = 'Europe/Berlin'
     time.tzset()
 
